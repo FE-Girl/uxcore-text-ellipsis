@@ -24,10 +24,17 @@ class TextEllipsis extends React.Component {
   componentDidMount() {
     const wrapDOM = ReactDOM.findDOMNode(this).parentNode;
     const praHeight = getHeightFromDOM(wrapDOM);
-    // 拿到父结构的 line-height 用于自动计算高度
-    const praLineHeight = wrapDOM.currentStyle ? parseInt(wrapDOM.currentStyle.lineHeight, 10) :
-                   parseInt(window.getComputedStyle(wrapDOM, null)
-                   .getPropertyValue('line-height'), 10);
+    let praLineHeight;
+
+    if (wrapDOM.currentStyle) {
+      const fontLen = wrapDOM.currentStyle.getAttribute('fontSize');
+      praLineHeight = parseInt(Number(fontLen.substring(0, fontLen.length - 2)) *
+        Number(wrapDOM.currentStyle.getAttribute('lineHeight')), 10);
+    } else {
+      const lineHeightLen = window.getComputedStyle(wrapDOM, null).getPropertyValue('line-height');
+      praLineHeight = Number(lineHeightLen.substring(0, lineHeightLen.length - 2));
+    }
+
 
     this.setState({
       height: praHeight,
@@ -50,7 +57,7 @@ class TextEllipsis extends React.Component {
     let handlerDom = <span className="handler">...</span>;
     let wrapperStyle = { maxHeight: lineLimit * textLineHeight };
 
-    if (lineLimit && (lineLimit * textLineHeight) < height) {
+    if (lineLimit && (lineLimit * textLineHeight < height)) {
       if (showTooltip) {
         handlerDom = (<Tooltip
           overlayClassName={overlayClassName}

@@ -18,7 +18,7 @@ class Demo extends React.Component {
   }
 
   render() {
-    const style = { width: '200px', marginTop: '20px',marginBottom: '20px' };
+    const style = { width: '200px', marginTop: '20px', marginBottom: '20px' };
     const pStyle = { color: 'red' };
     return (
       <div style={{ marginTop: '20px', marginLeft: '30px' }}>
